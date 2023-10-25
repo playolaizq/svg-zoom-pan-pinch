@@ -1,36 +1,56 @@
 import { useEffect, useRef } from 'react';
-import * as d3 from 'd3';
-import { usePinch } from '@use-gesture/react';
+import { createUseGesture, dragAction, pinchAction } from '@use-gesture/react';
+import { useSpring, animated } from '@react-spring/web';
 import classes from './App.module.css';
 
-const MIN_ZOOM = 0.5;
-const MAX_ZOOM = 3;
+const useGesture = createUseGesture([dragAction, pinchAction]);
 
 function App() {
   const svgRef = useRef();
-  const transform = useRef({ scale: 1, x: 0, y: 0 });
+  const [style, api] = useSpring(() => ({
+    x: 0,
+    y: 0,
+    scale: 1,
+    rotateZ: 0,
+  }));
 
-  const pinchHandlers = usePinch(({ delta: [d], offset: [ox, oy] }) => {
-    // Zoom the SVG based on the pinch gesture and adjust for the pinch center
-    transform.current.scale = transform.current.scale + d * 0.01;
-    transform.current.x -= ox * d * 0.01;
-    transform.current.y -= oy * d * 0.01;
-    svgRef.current.style.transform = `translate(${transform.current.x}px, ${transform.current.y}px) scale(${transform.current.scale})`;
-  });
+  useGesture(
+    {
+      onDrag: ({ pinching, cancel, offset: [x, y] }) => {
+        if (pinching) return cancel();
+        api.start({ x, y });
+      },
+      onPinch: ({ origin: [ox, oy], first, movement: [ms], offset: [s, a], memo }) => {
+        if (first) {
+          const { width, height, x, y } = svgRef.current.getBoundingClientRect();
+          const tx = ox - (x + width / 2);
+          const ty = oy - (y + height / 2);
+          memo = [style.x.get(), style.y.get(), tx, ty];
+        }
+
+        const x = memo[0] - (ms - 1) * memo[2];
+        const y = memo[1] - (ms - 1) * memo[3];
+        api.start({ scale: s, rotateZ: a, x, y });
+        return memo;
+      },
+    },
+    {
+      target: svgRef,
+      drag: { from: () => [style.x.get(), style.y.get()] },
+      pinch: { scaleBounds: { min: 0.5, max: 2 }, rubberband: true },
+    },
+  );
 
   useEffect(() => {
-    const svgContainer = d3.select(svgRef.current);
-
-    const zoom = d3.zoom().scaleExtent([MIN_ZOOM, MAX_ZOOM]).on('zoom', handleZoom);
-    svgContainer.call(zoom);
-
-    function handleZoom(event) {
-      svgContainer.selectAll('g').attr('transform', event.transform);
-      svgContainer.selectAll('path').attr('transform', event.transform);
-    }
+    const handler = (event) => event.preventDefault();
+    document.addEventListener('gesturestart', handler);
+    document.addEventListener('gesturechange', handler);
+    document.addEventListener('gestureend', handler);
 
     return () => {
-      svgContainer.on('.zoom', null);
+      document.removeEventListener('gesturestart', handler);
+      document.removeEventListener('gesturechange', handler);
+      document.removeEventListener('gestureend', handler);
     };
   }, []);
 
@@ -38,9 +58,9 @@ function App() {
     <div>
       <h1 className={classes.title}>SVG - Zoom, Pan, Pinch</h1>
       <div className={classes.svgContainer}>
-        <svg
+        <animated.svg
           ref={svgRef}
-          id="interactive-svg"
+          style={style}
           baseProfile="tiny"
           fill="#ececec"
           width="100%"
@@ -52,7 +72,6 @@ function App() {
           version="1.2"
           viewBox="0 0 2000 857"
           xmlns="http://www.w3.org/2000/svg"
-          {...pinchHandlers()}
         >
           <path
             d="M1383 261.6l1.5 1.8-2.9 0.8-2.4 1.1-5.9 0.8-5.3 1.3-2.4 2.8 1.9 2.7 1.4 3.2-2 2.7 0.8 2.5-0.9 2.3-5.2-0.2 3.1 4.2-3.1 1.7-1.4 3.8 1.1 3.9-1.8 1.8-2.1-0.6-4 0.9-0.2 1.7-4.1 0-2.3 3.7 0.8 5.4-6.6 2.7-3.9-0.6-0.9 1.4-3.4-0.8-5.3 1-9.6-3.3 3.9-5.8-1.1-4.1-4.3-1.1-1.2-4.1-2.7-5.1 1.6-3.5-2.5-1 0.5-4.7 0.6-8 5.9 2.5 3.9-0.9 0.4-2.9 4-0.9 2.6-2-0.2-5.1 4.2-1.3 0.3-2.2 2.9 1.7 1.6 0.2 3 0 4.3 1.4 1.8 0.7 3.4-2 2.1 1.2 0.9-2.9 3.2 0.1 0.6-0.9-0.2-2.6 1.7-2.2 3.3 1.4-0.1 2 1.7 0.3 0.9 5.4 2.7 2.1 1.5-1.4 2.2-0.6 2.5-2.9 3.8 0.5 5.4 0z"
@@ -1175,7 +1194,7 @@ function App() {
           <circle cx="997.9" cy="189.1" id="0"></circle>
           <circle cx="673.5" cy="724.1" id="1"></circle>
           <circle cx="1798.2" cy="719.3" id="2"></circle>
-        </svg>
+        </animated.svg>
       </div>
     </div>
   );

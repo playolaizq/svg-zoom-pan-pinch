@@ -1,6 +1,6 @@
 {
   "name": "svg-zoom-pan-pinch",
-  "description": "Zoom, pan, pinch an SVG with React and D3.js",
+  "description": "Zoom, pan, pinch an SVG with React, React Spring and @use-gesture",
   "version": "1.0.0",
   "type": "module",
   "license": "ISC",
@@ -12,8 +12,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@react-spring/web": "^9.7.3",
     "@use-gesture/react": "^10.3.0",
-    "d3": "^7.8.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

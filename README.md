@@ -1,6 +1,6 @@
 # SVG - Zoom, Pan, Pinch
 
-> Zoom, pan, pinch an SVG with `React` and `D3.js`.
+> Zoom, pan, pinch an SVG with `React`, `React Spring` and `@use-gesture`.
 
 ## Getting Started
 
