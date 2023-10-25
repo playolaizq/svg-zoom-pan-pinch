@@ -1,11 +1,11 @@
 # SVG - Zoom, Pan, Pinch
 
-> Zoom, pan, pinch an SVG with `React` and `React Spring`.
+> Zoom, pan, pinch an SVG with `React` and `D3.js`.
 
 ## Getting Started
 
 ```sh
-git clone https://github.com/playolaizq/svg-zoom-pan-pinch.git
+git clone git@github.com:playolaizq/svg-zoom-pan-pinch.git
 
 cd svg-zoom-pan-pinch
 

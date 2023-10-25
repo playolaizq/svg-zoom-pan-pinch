@@ -1,0 +1,11 @@
+.title {
+  text-align: center;
+}
+
+.svgContainer {
+  overflow: hidden;
+  border: 1px solid black;
+  border-radius: 16px;
+  margin: 24px;
+  padding: 8px;
+}
