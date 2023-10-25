@@ -1,0 +1,15 @@
+{
+  "name": "svg-zoom-pan-pinch",
+  "description": "Zoom, pan, pinch an SVG with Vanilla JavaScript",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.4.5"
+  },
+  "license": "ISC"
+}
