@@ -1,6 +1,6 @@
 # SVG - Zoom, Pan, Pinch
 
-> Zoom, pan, pinch an SVG with Vanilla JavaScript
+> Zoom, pan, pinch an SVG with `React` and `React Spring`.
 
 ## Getting Started
 
