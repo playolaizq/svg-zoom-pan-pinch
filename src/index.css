@@ -2,7 +2,7 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
+  color: #ffffff;
   background-color: #242424;
 
   font-synthesis: none;
@@ -17,9 +17,19 @@ body {
   min-width: 320px;
 }
 
+path {
+  fill: #ffffff;
+  stroke: #213547;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;
     background-color: #ffffff;
+  }
+
+  path {
+    fill: #213547;
+    stroke: #ffffff;
   }
 }
