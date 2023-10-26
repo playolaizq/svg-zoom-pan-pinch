@@ -61,7 +61,7 @@ function App() {
   }, []);
 
   return (
-    <main>
+    <main className={classes.main}>
       <h1 className={classes.title}>SVG - Zoom, Pan, Pinch</h1>
       <animated.svg
         className={classes.svgContainer}
