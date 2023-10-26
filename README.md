@@ -15,3 +15,13 @@ npm run dev
 ```
 
 See http://localhost:5173/
+
+## Staging Environment
+
+See https://playolaizq.github.io/svg-zoom-pan-pinch/
+
+## References
+
+- [React Spring docs](https://www.react-spring.dev/docs)
+- [@use-gesture React docs](https://www.npmjs.com/package/@use-gesture/react)
+- [@use-gesture zoom, pan, pinch example](https://codesandbox.io/s/github/pmndrs/use-gesture/tree/main/demo/src/sandboxes/card-zoom)
